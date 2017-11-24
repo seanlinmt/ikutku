@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5CD3B32F-793D-4281-AFE0-F1722C52F752}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ikutku</RootNamespace>
+    <AssemblyName>ikutku</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PublishDatabases>false</PublishDatabases>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Core, Version=1.9.13.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BundleTransformer.Core.1.9.13\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Yui, Version=1.9.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BundleTransformer.Yui.1.9.15\lib\net40\BundleTransformer.Yui.dll</HintPath>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.Enterprise.AspNetHelper, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Enterprise.AspNetHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="NWebsec">
+      <HintPath>..\packages\NWebsec.3.0.2\lib\45\NWebsec.dll</HintPath>
+    </Reference>
+    <Reference Include="NWebsec.Core">
+      <HintPath>..\packages\NWebsec.Core.1.0.0\lib\45\NWebsec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NWebsec.Mvc">
+      <HintPath>..\packages\NWebsec.Mvc.3.0.2\lib\45\NWebsec.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebApiContrib, Version=0.9.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebApiContrib.0.9.14.0\lib\net40\WebApiContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YUICompressor.NET.2.5.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\InjectionConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\AccountController.cs" />
+    <Compile Include="Controllers\API\baseApiController.cs" />
+    <Compile Include="Controllers\API\ListsController.cs" />
+    <Compile Include="Controllers\baseController.cs" />
+    <Compile Include="Controllers\dashboardController.cs" />
+    <Compile Include="Controllers\dummyController.cs" />
+    <Compile Include="Controllers\errorController.cs" />
+    <Compile Include="Controllers\homeController.cs" />
+    <Compile Include="Controllers\listsController.cs" />
+    <Compile Include="Controllers\loginController.cs" />
+    <Compile Include="Controllers\peopleController.cs" />
+    <Compile Include="Controllers\testController.cs" />
+    <Compile Include="Controllers\API\FollowersController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ActionFilters\API\ApiAuthorizeAttribute.cs" />
+    <Compile Include="Library\ActionFilters\MvcExceptionFilterAttribute.cs" />
+    <Compile Include="Library\ActionFilters\MvcAuthorizeAttribute.cs" />
+    <Compile Include="Library\ActionFilters\API\ApiExceptionFilterAttribute.cs" />
+    <Compile Include="Library\Handlers\ApiErrorResponseHandler.cs" />
+    <Compile Include="Library\Scheduler\TaskType.cs" />
+    <Compile Include="Library\Workers\Helpers\DbWorkerHelper.cs" />
+    <Compile Include="Library\Workers\Models\QueryResultContainer.cs" />
+    <Compile Include="Library\Workers\TwitterWorker.cs" />
+    <Compile Include="Library\Scheduler\BackgroundCacheWorker.cs" />
+    <Compile Include="Library\Scheduler\BackgroundScheduler.cs" />
+    <Compile Include="Library\Scheduler\CacheTimerType.cs" />
+    <Compile Include="Library\Workers\DatabaseWorker.cs" />
+    <Compile Include="Library\Scheduler\ActionHistory.cs" />
+    <Compile Include="Library\Workers\TwitterWorkerBase.cs" />
+    <Compile Include="ViewModels\action\UserActionViewModel.cs" />
+    <Compile Include="ViewModels\action\UserListMemberActionViewModel.cs" />
+    <Compile Include="ViewModels\dashboard\NotReadyViewModel.cs" />
+    <Compile Include="ViewModels\UserListViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="app_offline.html" />
+    <Content Include="Content\css\jquery-ui-1.10.3.custom.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\img\arrow-down.gif" />
+    <Content Include="Content\img\arrow-right.gif" />
+    <Content Include="Content\img\arrow_right.png" />
+    <Content Include="Content\img\background.gif" />
+    <Content Include="Content\img\button_del.png" />
+    <Content Include="Content\img\fail-whale.png" />
+    <Content Include="Content\img\favicon.png" />
+    <Content Include="Content\img\help_dark.png" />
+    <Content Include="Content\img\ikutku.jpg" />
+    <Content Include="Content\img\ikutku.png" />
+    <Content Include="Content\img\ikutku_large.png" />
+    <Content Include="Content\img\info_round.png" />
+    <Content Include="Content\img\landing.jpg" />
+    <Content Include="Content\img\loading_content.gif" />
+    <Content Include="Content\img\loading_grey.gif" />
+    <Content Include="Content\img\orb_warning.png" />
+    <Content Include="Content\img\power.png" />
+    <Content Include="Content\img\qrcode.png" />
+    <Content Include="Content\img\selected.png" />
+    <Content Include="Content\jgrowl\jquery.jgrowl.css" />
+    <Content Include="Content\loading.gif" />
+    <Content Include="Content\mobile.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\google.fastbutton.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="Scripts\jquery.alphanumeric.js" />
+    <Content Include="Scripts\jquery.google.fastbutton.js" />
+    <Content Include="Scripts\modernizr-2.0.6.min.js" />
+    <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\jquery.jgrowl.js" />
+    <Content Include="Scripts\jquery.prettydate.js" />
+    <Content Include="Scripts\ui.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BundleTransformer.Configuration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\people\content.cshtml" />
+    <Content Include="Views\error\NotFound.cshtml" />
+    <Content Include="Views\error\Index.cshtml" />
+    <Content Include="Views\Shared\ErrorLayout.cshtml" />
+    <Content Include="Views\error\Busy.cshtml" />
+    <Content Include="Views\Shared\Maintenance.cshtml" />
+    <Content Include="Views\people\ProfileActions.cshtml" />
+    <Content Include="Views\dashboard\NotReady.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\opensource\linqtotwitter\LinqToTwitter\LinqToTwitter.csproj">
+      <Project>{a214b9f0-6b8c-4e91-be99-27f55cc860c1}</Project>
+      <Name>LinqToTwitter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\opensource\unity\Unity\Unity.Mvc\Src\Unity.Mvc.csproj">
+      <Project>{1fb1a6fe-1898-4e72-906e-1c160ab50f2f}</Project>
+      <Name>Unity.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\opensource\unity\Unity\Unity.WebApi\Src\Unity.WebApi.csproj">
+      <Project>{e6a503f3-1b1d-4008-98ee-7eaca66dfb05}</Project>
+      <Name>Unity.WebApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\opensource\unity\Unity\Unity\Src\Unity.csproj">
+      <Project>{ee1f752c-1fab-41ad-ad63-857d0e62ab6b}</Project>
+      <Name>Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\clearpixels.git\clearpixels.Helpers\clearpixels.Helpers.csproj">
+      <Project>{0d0768d7-17e9-45de-95b9-f24c45b04323}</Project>
+      <Name>clearpixels.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\clearpixels.git\clearpixels.Logging\clearpixels.Logging.csproj">
+      <Project>{14e4934e-a77b-4a05-ab59-2aaefdf10c22}</Project>
+      <Name>clearpixels.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\clearpixels.git\clearpixels.Models\clearpixels.Models.csproj">
+      <Project>{eb69aa64-0c7f-49ac-984f-c2de89321ec2}</Project>
+      <Name>clearpixels.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ikutku.Constants\ikutku.Constants.csproj">
+      <Project>{a169311b-c7d2-4b6d-bde4-f8adaf67825a}</Project>
+      <Name>ikutku.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ikutku.DB\ikutku.DB.csproj">
+      <Project>{fe90521b-7b7c-4644-a48e-04d00ec25e49}</Project>
+      <Name>ikutku.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ikutku.Models\ikutku.Models.csproj">
+      <Project>{6825e07e-fb00-4da5-999d-87f130226f95}</Project>
+      <Name>ikutku.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\opensource\elmah\src\Elmah\Elmah.net-4.0.csproj">
+      <Project>{270ce8d7-4eeb-4106-9d3e-a7dfdc642f85}</Project>
+      <Name>Elmah.net-4.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\dashboard\Index.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\lists\content.cshtml" />
+    <Content Include="Views\lists\Index.cshtml" />
+    <Content Include="Views\people\Index.cshtml" />
+    <Content Include="Views\Shared\Site.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="App_Packages" />
+    <Folder Include="Views\login\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>clearpixelsCodeSigner.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>8080</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8888</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://ssd.labs.clearpixels.co.nz:8080</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

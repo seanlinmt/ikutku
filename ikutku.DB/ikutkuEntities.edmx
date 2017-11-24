@@ -1,0 +1,820 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ikutkuModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cachedUsers">
+          <Key>
+            <PropertyRef Name="twitterid" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="twitterid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="screenName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="profileImageUrl" Type="nvarchar" MaxLength="1500" Nullable="false" />
+          <Property Name="ratio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="lastTweet" Type="datetime" />
+          <Property Name="updated" Type="datetime" Nullable="false" />
+          <Property Name="followingsCount" Type="int" Nullable="false" />
+          <Property Name="followersCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="errorCounters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="count" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="followers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="twitterid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="followings">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="twitterid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="loginIntervals">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="timeBetweenLogins" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="queuedFollowingUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="queuedUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="settings" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="queueTimes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="secondsQueued" Type="int" Nullable="false" />
+          <Property Name="created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="statistics">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uncachedCount" Type="bigint" Nullable="false" />
+          <Property Name="uncachedElapsed" Type="bigint" Nullable="false" />
+          <Property Name="staleCount" Type="bigint" Nullable="false" />
+          <Property Name="staleElapsed" Type="bigint" Nullable="false" />
+          <Property Name="insertCount" Type="int" Nullable="false" />
+          <Property Name="insertElapsed" Type="bigint" Nullable="false" />
+          <Property Name="ticksSince" Type="bigint" Nullable="false" />
+          <Property Name="ticks" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="startTime" Type="datetime" />
+          <Property Name="settings" Type="bigint" Nullable="false" />
+          <Property Name="photoUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="updated" Type="datetime" Nullable="false" />
+          <Property Name="oauthToken" Type="varchar" MaxLength="256" />
+          <Property Name="oauthSecret" Type="varchar" MaxLength="256" />
+          <Property Name="followersCursor" Type="bigint" />
+          <Property Name="followingsCursor" Type="bigint" />
+          <Property Name="lastRebuildDuration" Type="bigint" />
+          <Property Name="followerCountSync" Type="int" />
+          <Property Name="followerCountTotal" Type="int" />
+          <Property Name="followingCountSync" Type="int" />
+          <Property Name="followingCountTotal" Type="int" />
+          <Property Name="uncachedTotal" Type="int" />
+          <Property Name="uncachedCount" Type="int" />
+          <Property Name="uncachedFollowingTotal" Type="int" />
+          <Property Name="uncachedFollowingCount" Type="int" />
+          <Property Name="userlistCount" Type="int" />
+          <Property Name="lastLogin" Type="datetime" />
+          <Property Name="authFailCount" Type="int" Nullable="false" />
+          <Property Name="apiNextRetry" Type="float" />
+        </EntityType>
+        <EntityType Name="usersInLists">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userlistid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="twitterid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usersLists">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="listname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="slug" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="exclude" Type="bit" Nullable="false" />
+          <Property Name="ownerid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="updated" Type="datetime" Nullable="false" />
+          <Property Name="listCursor" Type="bigint" />
+          <Property Name="memberCount" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_followers_cachedUsers">
+          <End Role="cachedUsers" Type="Self.cachedUsers" Multiplicity="1" />
+          <End Role="followers" Type="Self.followers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cachedUsers">
+              <PropertyRef Name="twitterid" />
+            </Principal>
+            <Dependent Role="followers">
+              <PropertyRef Name="twitterid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_followers_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="followers" Type="Self.followers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="followers">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_followings_cachedUsers">
+          <End Role="cachedUsers" Type="Self.cachedUsers" Multiplicity="1" />
+          <End Role="followings" Type="Self.followings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cachedUsers">
+              <PropertyRef Name="twitterid" />
+            </Principal>
+            <Dependent Role="followings">
+              <PropertyRef Name="twitterid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_followings_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="followings" Type="Self.followings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="followings">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_loginIntervals_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="loginIntervals" Type="Self.loginIntervals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="loginIntervals">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_queuedFollowingUsers_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="queuedFollowingUsers" Type="Self.queuedFollowingUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="queuedFollowingUsers">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_queuedUsers_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="queuedUsers" Type="Self.queuedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="queuedUsers">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_lists_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="usersLists" Type="Self.usersLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersLists">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_usersInLists_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="usersInLists" Type="Self.usersInLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersInLists">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_usersInLists_usersLists">
+          <End Role="usersLists" Type="Self.usersLists" Multiplicity="1" />
+          <End Role="usersInLists" Type="Self.usersInLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usersLists">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersInLists">
+              <PropertyRef Name="userlistid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ikutkuModelStoreContainer">
+          <EntitySet Name="cachedUsers" EntityType="Self.cachedUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="errorCounters" EntityType="Self.errorCounters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="followers" EntityType="Self.followers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="followings" EntityType="Self.followings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="loginIntervals" EntityType="Self.loginIntervals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="queuedFollowingUsers" EntityType="Self.queuedFollowingUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="queuedUsers" EntityType="Self.queuedUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="queueTimes" EntityType="Self.queueTimes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="statistics" EntityType="Self.statistics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usersInLists" EntityType="Self.usersInLists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usersLists" EntityType="Self.usersLists" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_followers_cachedUsers" Association="Self.FK_followers_cachedUsers">
+            <End Role="cachedUsers" EntitySet="cachedUsers" />
+            <End Role="followers" EntitySet="followers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_followers_users" Association="Self.FK_followers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="followers" EntitySet="followers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_followings_cachedUsers" Association="Self.FK_followings_cachedUsers">
+            <End Role="cachedUsers" EntitySet="cachedUsers" />
+            <End Role="followings" EntitySet="followings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_followings_users" Association="Self.FK_followings_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="followings" EntitySet="followings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_loginIntervals_users" Association="Self.FK_loginIntervals_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="loginIntervals" EntitySet="loginIntervals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_queuedFollowingUsers_users" Association="Self.FK_queuedFollowingUsers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="queuedFollowingUsers" EntitySet="queuedFollowingUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_queuedUsers_users" Association="Self.FK_queuedUsers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="queuedUsers" EntitySet="queuedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_lists_users" Association="Self.FK_users_lists_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="usersLists" EntitySet="usersLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_usersInLists_users" Association="Self.FK_usersInLists_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="usersInLists" EntitySet="usersInLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_usersInLists_usersLists" Association="Self.FK_usersInLists_usersLists">
+            <End Role="usersLists" EntitySet="usersLists" />
+            <End Role="usersInLists" EntitySet="usersInLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ikutkuModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ikutkuEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="loginIntervals" EntityType="ikutkuModel.loginInterval" />
+          <EntitySet Name="queuedUsers" EntityType="ikutkuModel.queuedUser" />
+          <EntitySet Name="queueTimes" EntityType="ikutkuModel.queueTime" />
+          <EntitySet Name="statistics" EntityType="ikutkuModel.statistic" />
+          <EntitySet Name="usersInLists" EntityType="ikutkuModel.usersInList" />
+          <EntitySet Name="usersLists" EntityType="ikutkuModel.usersList" />
+          <AssociationSet Name="FK_usersInLists_usersLists" Association="ikutkuModel.FK_usersInLists_usersLists">
+            <End Role="usersLists" EntitySet="usersLists" />
+            <End Role="usersInLists" EntitySet="usersInLists" />
+          </AssociationSet>
+          <EntitySet Name="queuedFollowingUsers" EntityType="ikutkuModel.queuedFollowingUser" />
+          <EntitySet Name="cachedUsers" EntityType="ikutkuModel.cachedUser" />
+          <EntitySet Name="errorCounters" EntityType="ikutkuModel.errorCounter" />
+          <EntitySet Name="followers" EntityType="ikutkuModel.follower" />
+          <EntitySet Name="followings" EntityType="ikutkuModel.following" />
+          <AssociationSet Name="FK_followers_cachedUsers" Association="ikutkuModel.FK_followers_cachedUsers">
+            <End Role="cachedUser" EntitySet="cachedUsers" />
+            <End Role="follower" EntitySet="followers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_followings_cachedUsers" Association="ikutkuModel.FK_followings_cachedUsers">
+            <End Role="cachedUser" EntitySet="cachedUsers" />
+            <End Role="following" EntitySet="followings" />
+          </AssociationSet>
+          <EntitySet Name="users" EntityType="ikutkuModel.user" />
+          <AssociationSet Name="FK_followers_users" Association="ikutkuModel.FK_followers_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="follower" EntitySet="followers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_followings_users" Association="ikutkuModel.FK_followings_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="following" EntitySet="followings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_loginIntervals_users" Association="ikutkuModel.FK_loginIntervals_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="loginInterval" EntitySet="loginIntervals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_queuedFollowingUsers_users" Association="ikutkuModel.FK_queuedFollowingUsers_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="queuedFollowingUser" EntitySet="queuedFollowingUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_queuedUsers_users" Association="ikutkuModel.FK_queuedUsers_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="queuedUser" EntitySet="queuedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_lists_users" Association="ikutkuModel.FK_users_lists_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="usersList" EntitySet="usersLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_usersInLists_users" Association="ikutkuModel.FK_usersInLists_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="usersInList" EntitySet="usersInLists" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="loginInterval">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ownerid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="timeBetweenLogins" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_loginIntervals_users" FromRole="loginInterval" ToRole="user" />
+        </EntityType>
+        <EntityType Name="queuedUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ownerid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="settings" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_queuedUsers_users" FromRole="queuedUser" ToRole="user" />
+        </EntityType>
+        <EntityType Name="queueTime">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="secondsQueued" Type="Int32" Nullable="false" />
+          <Property Name="created" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="statistic">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="uncachedCount" Type="Int64" Nullable="false" />
+          <Property Name="uncachedElapsed" Type="Int64" Nullable="false" />
+          <Property Name="staleCount" Type="Int64" Nullable="false" />
+          <Property Name="staleElapsed" Type="Int64" Nullable="false" />
+          <Property Name="insertCount" Type="Int32" Nullable="false" />
+          <Property Name="insertElapsed" Type="Int64" Nullable="false" />
+          <Property Name="ticksSince" Type="Int64" Nullable="false" />
+          <Property Name="ticks" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usersInList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="userlistid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="twitterid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="ownerid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="usersList" Relationship="ikutkuModel.FK_usersInLists_usersLists" FromRole="usersInLists" ToRole="usersLists" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_usersInLists_users" FromRole="usersInList" ToRole="user" />
+        </EntityType>
+        <EntityType Name="usersList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="listname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="slug" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="exclude" Type="Boolean" Nullable="false" />
+          <Property Name="ownerid" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="updated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="listCursor" Type="Int64" />
+          <Property Name="memberCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="usersInLists" Relationship="ikutkuModel.FK_usersInLists_usersLists" FromRole="usersLists" ToRole="usersInLists" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_users_lists_users" FromRole="usersList" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_usersInLists_usersLists">
+          <End Role="usersLists" Type="ikutkuModel.usersList" Multiplicity="1" />
+          <End Role="usersInLists" Type="ikutkuModel.usersInList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usersLists">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersInLists">
+              <PropertyRef Name="userlistid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="queuedFollowingUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int64" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ownerid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_queuedFollowingUsers_users" FromRole="queuedFollowingUser" ToRole="user" />
+        </EntityType>
+        <EntityType Name="cachedUser">
+          <Key>
+            <PropertyRef Name="twitterid" />
+          </Key>
+          <Property Type="Int64" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="twitterid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="screenName" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="profileImageUrl" Nullable="false" MaxLength="1500" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="ratio" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="lastTweet" Precision="3" />
+          <Property Type="DateTime" Name="updated" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="followingsCount" Nullable="false" />
+          <Property Type="Int32" Name="followersCount" Nullable="false" />
+          <NavigationProperty Name="followers" Relationship="ikutkuModel.FK_followers_cachedUsers" FromRole="cachedUser" ToRole="follower" />
+          <NavigationProperty Name="followings" Relationship="ikutkuModel.FK_followings_cachedUsers" FromRole="cachedUser" ToRole="following" />
+        </EntityType>
+        <EntityType Name="errorCounter">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int16" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="type" Nullable="false" />
+          <Property Type="Int32" Name="count" Nullable="false" />
+        </EntityType>
+        <EntityType Name="follower">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int64" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="twitterid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ownerid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cachedUser" Relationship="ikutkuModel.FK_followers_cachedUsers" FromRole="follower" ToRole="cachedUser" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_followers_users" FromRole="follower" ToRole="user" />
+        </EntityType>
+        <EntityType Name="following">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int64" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="twitterid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ownerid" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cachedUser" Relationship="ikutkuModel.FK_followings_cachedUsers" FromRole="following" ToRole="cachedUser" />
+          <NavigationProperty Name="user" Relationship="ikutkuModel.FK_followings_users" FromRole="following" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_followers_cachedUsers">
+          <End Type="ikutkuModel.cachedUser" Role="cachedUser" Multiplicity="1" />
+          <End Type="ikutkuModel.follower" Role="follower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cachedUser">
+              <PropertyRef Name="twitterid" />
+            </Principal>
+            <Dependent Role="follower">
+              <PropertyRef Name="twitterid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_followings_cachedUsers">
+          <End Type="ikutkuModel.cachedUser" Role="cachedUser" Multiplicity="1" />
+          <End Type="ikutkuModel.following" Role="following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cachedUser">
+              <PropertyRef Name="twitterid" />
+            </Principal>
+            <Dependent Role="following">
+              <PropertyRef Name="twitterid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="startTime" Type="DateTime" Precision="3" />
+          <Property Name="settings" Type="Int64" Nullable="false" />
+          <Property Name="photoUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="updated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="oauthToken" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="oauthSecret" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="followersCursor" Type="Int64" />
+          <Property Name="followingsCursor" Type="Int64" />
+          <Property Name="lastRebuildDuration" Type="Int64" />
+          <Property Name="followerCountSync" Type="Int32" />
+          <Property Name="followerCountTotal" Type="Int32" />
+          <Property Name="followingCountSync" Type="Int32" />
+          <Property Name="followingCountTotal" Type="Int32" />
+          <Property Name="uncachedTotal" Type="Int32" />
+          <Property Name="uncachedCount" Type="Int32" />
+          <Property Name="uncachedFollowingTotal" Type="Int32" />
+          <Property Name="uncachedFollowingCount" Type="Int32" />
+          <Property Name="userlistCount" Type="Int32" />
+          <Property Name="lastLogin" Type="DateTime" Precision="3" />
+          <Property Name="authFailCount" Type="Int32" Nullable="false" />
+          <Property Name="apiNextRetry" Type="Double" />
+          <NavigationProperty Name="followers" Relationship="ikutkuModel.FK_followers_users" FromRole="user" ToRole="follower" />
+          <NavigationProperty Name="followings" Relationship="ikutkuModel.FK_followings_users" FromRole="user" ToRole="following" />
+          <NavigationProperty Name="loginIntervals" Relationship="ikutkuModel.FK_loginIntervals_users" FromRole="user" ToRole="loginInterval" />
+          <NavigationProperty Name="queuedFollowingUsers" Relationship="ikutkuModel.FK_queuedFollowingUsers_users" FromRole="user" ToRole="queuedFollowingUser" />
+          <NavigationProperty Name="queuedUsers" Relationship="ikutkuModel.FK_queuedUsers_users" FromRole="user" ToRole="queuedUser" />
+          <NavigationProperty Name="usersLists" Relationship="ikutkuModel.FK_users_lists_users" FromRole="user" ToRole="usersList" />
+          <NavigationProperty Name="usersInLists" Relationship="ikutkuModel.FK_usersInLists_users" FromRole="user" ToRole="usersInList" />
+        </EntityType>
+        <Association Name="FK_followers_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.follower" Role="follower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="follower">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_followings_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.following" Role="following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="following">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_loginIntervals_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.loginInterval" Role="loginInterval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="loginInterval">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_queuedFollowingUsers_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.queuedFollowingUser" Role="queuedFollowingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="queuedFollowingUser">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_queuedUsers_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.queuedUser" Role="queuedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="queuedUser">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_lists_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.usersList" Role="usersList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersList">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_usersInLists_users">
+          <End Type="ikutkuModel.user" Role="user" Multiplicity="1" />
+          <End Type="ikutkuModel.usersInList" Role="usersInList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usersInList">
+              <PropertyRef Name="ownerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ikutkuModelStoreContainer" CdmEntityContainer="ikutkuEntities">
+          <EntitySetMapping Name="loginIntervals">
+            <EntityTypeMapping TypeName="ikutkuModel.loginInterval">
+              <MappingFragment StoreEntitySet="loginIntervals">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="timeBetweenLogins" ColumnName="timeBetweenLogins" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="queuedUsers">
+            <EntityTypeMapping TypeName="ikutkuModel.queuedUser">
+              <MappingFragment StoreEntitySet="queuedUsers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="settings" ColumnName="settings" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="queueTimes">
+            <EntityTypeMapping TypeName="ikutkuModel.queueTime">
+              <MappingFragment StoreEntitySet="queueTimes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="secondsQueued" ColumnName="secondsQueued" />
+                <ScalarProperty Name="created" ColumnName="created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="statistics">
+            <EntityTypeMapping TypeName="ikutkuModel.statistic">
+              <MappingFragment StoreEntitySet="statistics">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uncachedCount" ColumnName="uncachedCount" />
+                <ScalarProperty Name="uncachedElapsed" ColumnName="uncachedElapsed" />
+                <ScalarProperty Name="staleCount" ColumnName="staleCount" />
+                <ScalarProperty Name="staleElapsed" ColumnName="staleElapsed" />
+                <ScalarProperty Name="insertCount" ColumnName="insertCount" />
+                <ScalarProperty Name="insertElapsed" ColumnName="insertElapsed" />
+                <ScalarProperty Name="ticksSince" ColumnName="ticksSince" />
+                <ScalarProperty Name="ticks" ColumnName="ticks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usersInLists">
+            <EntityTypeMapping TypeName="ikutkuModel.usersInList">
+              <MappingFragment StoreEntitySet="usersInLists">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userlistid" ColumnName="userlistid" />
+                <ScalarProperty Name="twitterid" ColumnName="twitterid" />
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usersLists">
+            <EntityTypeMapping TypeName="ikutkuModel.usersList">
+              <MappingFragment StoreEntitySet="usersLists">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="listname" ColumnName="listname" />
+                <ScalarProperty Name="slug" ColumnName="slug" />
+                <ScalarProperty Name="exclude" ColumnName="exclude" />
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="updated" ColumnName="updated" />
+                <ScalarProperty Name="listCursor" ColumnName="listCursor" />
+                <ScalarProperty Name="memberCount" ColumnName="memberCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="queuedFollowingUsers">
+            <EntityTypeMapping TypeName="ikutkuModel.queuedFollowingUser">
+              <MappingFragment StoreEntitySet="queuedFollowingUsers">
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cachedUsers">
+            <EntityTypeMapping TypeName="ikutkuModel.cachedUser">
+              <MappingFragment StoreEntitySet="cachedUsers">
+                <ScalarProperty Name="followersCount" ColumnName="followersCount" />
+                <ScalarProperty Name="followingsCount" ColumnName="followingsCount" />
+                <ScalarProperty Name="updated" ColumnName="updated" />
+                <ScalarProperty Name="lastTweet" ColumnName="lastTweet" />
+                <ScalarProperty Name="ratio" ColumnName="ratio" />
+                <ScalarProperty Name="profileImageUrl" ColumnName="profileImageUrl" />
+                <ScalarProperty Name="screenName" ColumnName="screenName" />
+                <ScalarProperty Name="twitterid" ColumnName="twitterid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="errorCounters">
+            <EntityTypeMapping TypeName="ikutkuModel.errorCounter">
+              <MappingFragment StoreEntitySet="errorCounters">
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="followers">
+            <EntityTypeMapping TypeName="ikutkuModel.follower">
+              <MappingFragment StoreEntitySet="followers">
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="twitterid" ColumnName="twitterid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="followings">
+            <EntityTypeMapping TypeName="ikutkuModel.following">
+              <MappingFragment StoreEntitySet="followings">
+                <ScalarProperty Name="ownerid" ColumnName="ownerid" />
+                <ScalarProperty Name="twitterid" ColumnName="twitterid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="ikutkuModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="apiNextRetry" ColumnName="apiNextRetry" />
+                <ScalarProperty Name="authFailCount" ColumnName="authFailCount" />
+                <ScalarProperty Name="lastLogin" ColumnName="lastLogin" />
+                <ScalarProperty Name="userlistCount" ColumnName="userlistCount" />
+                <ScalarProperty Name="uncachedFollowingCount" ColumnName="uncachedFollowingCount" />
+                <ScalarProperty Name="uncachedFollowingTotal" ColumnName="uncachedFollowingTotal" />
+                <ScalarProperty Name="uncachedCount" ColumnName="uncachedCount" />
+                <ScalarProperty Name="uncachedTotal" ColumnName="uncachedTotal" />
+                <ScalarProperty Name="followingCountTotal" ColumnName="followingCountTotal" />
+                <ScalarProperty Name="followingCountSync" ColumnName="followingCountSync" />
+                <ScalarProperty Name="followerCountTotal" ColumnName="followerCountTotal" />
+                <ScalarProperty Name="followerCountSync" ColumnName="followerCountSync" />
+                <ScalarProperty Name="lastRebuildDuration" ColumnName="lastRebuildDuration" />
+                <ScalarProperty Name="followingsCursor" ColumnName="followingsCursor" />
+                <ScalarProperty Name="followersCursor" ColumnName="followersCursor" />
+                <ScalarProperty Name="oauthSecret" ColumnName="oauthSecret" />
+                <ScalarProperty Name="oauthToken" ColumnName="oauthToken" />
+                <ScalarProperty Name="updated" ColumnName="updated" />
+                <ScalarProperty Name="photoUrl" ColumnName="photoUrl" />
+                <ScalarProperty Name="settings" ColumnName="settings" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

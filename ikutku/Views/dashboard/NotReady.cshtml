@@ -1,0 +1,192 @@
+﻿@{
+    Layout = "~/Views/Shared/Site.cshtml";
+}
+
+@using ikutku.Constants
+@using ikutku.Models.sync
+@using ikutku.Models.user
+@model ikutku.ViewModels.dashboard.NotReadyViewModel
+@section MainContent {
+    <h1>Synchronising Your Account</h1>
+    <div class="small">
+        <p id="notificationOffSpan" class="@(Model.NotificationOff ? "" : "hidden")">
+            No notification will be sent when your account is ready.
+            <button id="notificationOnLink" type="button" class="smaller black">Turn on notification</button>
+        </p>
+        <p id="notificationOnSpan" class="@(Model.NotificationOff ? "hidden" : "")">
+            You will be notified when your account is ready.
+            <button id="notificationOffLink" type="button" class="smaller black">Turn off notification</button>
+        </p>
+    </div>
+    <div class="font_gothic mt20">
+        <p id="pTimeleft" class="hidden">This should take around <span id="timeLeft">@Model.diffProgress.TimeLeft</span></p>
+        <p>
+            <strong class="smaller">next refresh</strong> <span id="nextRefresh">@Model.diffProgress.NextRefresh</span>,
+            <strong class="smaller">queue position</strong> <span id="queuePosition">@Model.diffProgress.PositionInQueue</span>,
+            <strong class="smaller">auth failures</strong> <span id="authFail" title="If this reaches 50, we will reset your account. So you will need to login again">@Model.diffProgress.AuthFailure</span>
+        </p>
+        <h2>Non-Followers</h2>
+        <div id="diffProgressPanel">
+            <p>
+                <strong class="smaller">followers</strong> <span id="followers">@Model.diffProgress.Followers</span>/<span id="totalFollowers">@Model.diffProgress.TotalFollowers</span>,
+                <strong class="smaller">cache</strong> <span id="usercached">@Model.diffProgress.UserCached</span>/<span id="totalUserCached">@Model.diffProgress.TotalUserCache</span>,
+                <strong class="smaller">lists</strong> <span id="userLists">@Model.diffProgress.UserLists</span>/<span id="totalUserLists">@Model.diffProgress.TotalUserLists</span>
+            </p>
+        </div>
+        <p>
+            <button id="buttonDiffContinue" autocomplete="off">processing</button>
+        </p>
+    </div>
+    <h2>
+        Everyone You're Following
+    </h2>
+    <div class="font_gothic">
+        <div id="followingsProgressPanel">
+            <p>
+                <strong class="smaller">cache</strong> <span id="followingsUsercached">@Model.followingProgress.UserCached</span>/
+                <span id="followingsTotalUserCached">@Model.followingProgress.TotalUserCache</span>
+            </p>
+        </div>
+        <p>
+            <button id="buttonFollowingsContinue" autocomplete="off">processing</button>
+        </p>
+    </div>
+    <script type="text/javascript">
+        var redirectWhenDone = function() {
+            window.location = "/dashboard";
+        };
+
+        var setNotification = function(turnOff) {
+            var setVal = @((int) Settings.NO_DIRECT_MSG);
+            if (turnOff) {
+                $('#notificationOnLink').ajax({
+                    url: '/api/account/' + setVal,
+                    cache: false,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(data) {
+                        if (data == setVal) {
+                            $('#notificationOnSpan').fadeOut(function() {
+                                $('#notificationOffSpan').show();
+                            });
+                        }
+                    }
+                });
+            } else {
+                $('#notificationOffLink').ajax({
+                    url: '/api/account/' + setVal,
+                    cache: false,
+                    type: 'DELETE',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(data) {
+                        if (data == setVal) {
+                            $('#notificationOffSpan').fadeOut(function() {
+                                $('#notificationOnSpan').show();
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function() {
+            $('#buttonDiffContinue, #buttonFollowingsContinue').showLoading();
+            $('#notificationOnLink').fastClick(function() {
+                setNotification(false);
+            });
+
+            $('#notificationOffLink').fastClick(function() {
+                setNotification(true);
+            });
+
+            $('#buttonDiffContinue').fastClick(function() {
+                redirectWhenDone();
+            });
+
+            $('#buttonFollowingsContinue').fastClick(function() {
+                redirectWhenDone();
+            });
+
+
+            var followingsInterval;
+            var diffInterval = setInterval(function() {
+                $.ajax({
+                    url: '/api/account?type=@(AccountStatus.DIFFQUEUE)',
+                    cache: false,
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(diffData) {
+                        if (diffData != null) {
+                            if (diffData.Completed) {
+                                $('#buttonDiffContinue').endLoading();
+                                $('#buttonDiffContinue').text('continue >');
+                                $('#diffProgressPanel').fadeOut('fast');
+                                clearInterval(diffInterval);
+
+                                $('#pTimeleft').hide();
+
+                                // start followings queue
+                                followingsInterval = setInterval(function() {
+                                    $.ajax({
+                                        url: '/api/account?type=@(AccountStatus.FOLLOWINGSQUEUE)',
+                                        cache: false,
+                                        type: 'GET',
+                                        contentType: 'application/json; charset=utf-8',
+                                        success: function(followingsData) {
+                                            if (followingsData != null) {
+                                                if (followingsData.Completed) {
+                                                    $('#followingsProgressPanel').fadeOut('fast');
+                                                    $('#buttonFollowingsContinue').endLoading();
+                                                    $('#buttonFollowingsContinue').text('continue >');
+                                                    clearInterval(followingsInterval);
+                                                }
+
+                                                if (parseInt(diffData.AuthFailure, 10) > @(General.AUTH_MAX_FAILURES)) {
+                                                    window.location = '/login/signout';
+                                                }
+
+                                                $('#nextRefresh').html(followingsData.NextRefresh);
+                                                $('#queuePosition').html(followingsData.PositionInQueue);
+                                                $('#timeLeft').html(followingsData.TimeLeft);
+                                                $('#authFail').html(followingsData.AuthFailure);
+
+                                                if (followingsData.PositionInQueue == '@(StringsResource.QUEUE_PROCESSING)') {
+                                                    $('#pTimeleft').fadeIn(function() {
+                                                        $(this).show();
+                                                    });
+                                                }
+
+                                                $('#followingsUsercached').html(followingsData.UserCached);
+                                                $('#followingsTotalUserCached').html(followingsData.TotalUserCache);
+                                            }
+                                        }
+                                    });
+                                }, 10000);
+                            } // complete
+                            if (parseInt(diffData.AuthFailure, 10) > @(General.AUTH_MAX_FAILURES)) {
+                                window.location = '/login/signout';
+                            }
+                            $('#nextRefresh').html(diffData.NextRefresh);
+                            $('#queuePosition').html(diffData.PositionInQueue);
+                            $('#timeLeft').html(diffData.TimeLeft);
+                            $('#authFail').html(diffData.AuthFailure);
+
+                            if (diffData.PositionInQueue == '@(StringsResource.QUEUE_PROCESSING)') {
+                                $('#pTimeleft').fadeIn(function() {
+                                    $(this).show();
+                                });
+                            }
+
+                            $('#followers').html(diffData.Followers);
+                            $('#totalFollowers').html(diffData.TotalFollowers);
+                            $('#usercached').html(diffData.UserCached);
+                            $('#totalUserCached').html(diffData.TotalUserCache);
+                            $('#userLists').html(diffData.UserLists);
+                            $('#totalUserLists').html(diffData.TotalUserLists);
+                        }
+                    }
+                });
+            }, 10000);
+        });
+    </script>
+}

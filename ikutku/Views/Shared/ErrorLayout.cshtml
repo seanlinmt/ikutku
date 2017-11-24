@@ -1,0 +1,36 @@
+﻿@using System.Web.Optimization
+<!doctype html>
+<html class="no-js" lang="en">
+<head id="Head1" runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="google-site-verification" content="7fF1unTj3S0li5sBy5ZDk7-4QaEAroFey3S0Bu8Pp9c" />
+    <link rel="icon" href="/Content/img/favicon.png" type="image/png" />
+    <link rel="shortcut icon" href="/Content/img/favicon.png" type="image/png" />
+    <title>
+        @ViewBag.Title | ikutku
+    </title>
+    <meta id="Title_Description" name="description" content="Manage Twitter followers, Are You Following Me" />
+    <meta id="Title_Keywords" name="keywords" content="Twitter Are You Following Me, manage twitter followers, who is not following me" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1; maximum-scale=1.0;">
+    @Styles.Render("~/css/all")
+</head>
+<body>
+    <div id="header-container">
+        <header class="wrapper clearfix">
+            <div class="logo">
+                <h1 id="title"><img src="/Content/img/ikutku_large.png" alt="ikutku"/></h1>
+                <div style="color:#3399cc; font-size: 20px">Manage your twitter followers</div>
+            </div>
+        </header>
+    </div>
+    <div id="main-container">
+        <div id="main" class="wrapper clearfix">
+            <article>
+                @RenderSection("MainContent", required: false)
+            </article>
+        </div>
+    </div>
+</body>
+</html>

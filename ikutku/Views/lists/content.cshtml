@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ikutku.Models.user.lists.UserList>
+@foreach (var entry in Model)
+        {
+            <tr>
+                <td>
+                    @Html.TextBox("listname", entry.name)
+                    @Html.Hidden("id", entry.id)
+                </td>
+                <td>
+                    <select id="status" name="status">
+                        <option @(!entry.exclude ? "selected='selected'" : "") value="False">Include</option>
+                        <option @(entry.exclude ? "selected='selected'" : "") value="True">Exclude</option>
+                    </select></td>
+                <td>
+                    <img class="list_delete" src="/Content/img/button_del.png"/>
+                </td>
+            </tr>
+        }

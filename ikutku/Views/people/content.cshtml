@@ -1,0 +1,38 @@
+﻿@using clearpixels.Helpers
+@model ikutku.Models.user.followers.FollowersListing
+@if(Model.showHeader)
+{
+    <div class="result_header">
+        <div class="font_12px">@Html.Raw(Model.count.ToQuantityString("person", "people"))</div>
+    </div>  
+@Html.Raw("<div id='result_content'>")
+}
+
+@foreach (var row in Model.followers)
+{
+    <div class="result_shadow user_entry @(row.@protected?"private":"") @(row.@excluded?"user_overlay":"")" alt="@(row.screenName)" alt2="@(row.twitterUserid)">
+        <img align="absmiddle" src="@(row.profileImageUrl)" class="fl pi">
+        <div class="content">
+            <a target="_blank" href="http://twitter.com/@(row.screenName)" class="name">@row.screenName</a>
+            <div><strong title="followers">@row.followers</strong> <strong title="followings">@row.followings</strong>  <span title="follower ratio">@row.ratio.ToString("f2")</span></div>
+            <div class="tweetDate">@Html.Raw(row.lastTweetDateString)</div>
+        </div>
+        <div class="clear"></div>
+    </div>
+}
+
+@if(Model.hasMore)
+{
+    <div class="clear">
+        <button autocomplete="off" class="moreButton black" type="button">
+            more</button>
+        <p class="error_container">
+            <span class="error"></span>
+        </p>
+    </div>
+}
+
+@if(Model.showHeader)
+{
+    @Html.Raw("</div>")
+}

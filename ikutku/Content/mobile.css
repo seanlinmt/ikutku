@@ -1,0 +1,15 @@
+﻿.container {
+    width: 320px;
+    margin: 0;
+}
+
+#main {
+    width: 320px;
+}
+
+.result_body {
+}
+
+div.info_panel {
+    display: none;
+}

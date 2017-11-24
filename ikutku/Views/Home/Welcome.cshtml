@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/Site.cshtml";
+}
+
+@section MainContent
+{
+    <div class="content">
+        <div class="font_gothic">
+            <div class="plan_container">
+                <ul>
+                    <li>Find out who is not following you back.</li>
+                    <li>Find out who you are not following back.</li>
+                    <li>Whitelist using twitter lists.</li>
+                    <li>Sort by number of followers, activity, follow ratio and follow date.</li>
+                    <li>Supports accounts with millions of followers.</li>
+                </ul>
+            </div>
+            <div class="signin">
+                <button id="login_pro">
+                    <strong>Sign In</strong> (it's free)
+                </button>
+            </div>
+            <p class="error_container" @(string.IsNullOrEmpty(@ViewBag.ErrorMessage) ? "" : "style=display:block")>
+                <span class="error">@ViewBag.ErrorMessage</span>
+            </p>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#login_pro').fastClick(function () {
+                window.location = '/login';
+            });
+            $('li:even', '.plan_container').addClass('font_black');
+            $('li:odd', '.plan_container').addClass('font_darkgrey');
+        });
+    </script>
+}

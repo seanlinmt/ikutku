@@ -1,0 +1,106 @@
+﻿@model ikutku.ViewModels.UserListViewModel
+<p class="font_black smaller font_gothic">Select <strong>Exclude</strong> to hide people in the selected list from ikutku. </p>
+<h2>Your Lists  <button id="createlist_action" class="smaller am">create private list</button></h2>
+
+<div id="listsForm">
+    <table id="listsTable">
+        <tbody>
+            @Html.Partial("content", Model.lists)
+        </tbody>
+    </table>
+    <h2>Settings</h2>
+    @Html.DropDownList("excluded_hide", Model.displaySettings)
+    <div class="mt10">
+        <button id="buttonSaveListSettings" type="button">save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // list delete
+    function initListDelete(selector) {
+        $(selector).fastClick(function () {
+            var row = $(this).closest('tr');
+
+            var listidContainer = $('#id', row);
+            var listname = $('#listname', row).val();
+
+            var confirm = window.confirm("Are you sure you want to delete the list " + listname + "?");
+            if (!confirm) {
+                return;
+            }
+
+            if ($(listidContainer).length > 0) {
+                $(self).ajax({
+                    url: '/api/lists/' + $(listidContainer).val(),
+                    cache: false,
+                    type: 'DELETE',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data) {
+                            $(row).slideUp(function () {
+                                $(this).remove();
+                            });
+                        } else {
+                            $.jGrowl('List delete failed');
+                        }
+                    }
+                });
+
+            } else {
+                $(row).slideUp(function () {
+                    $(this).remove();
+                });
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('#buttonSaveListSettings').fastClick(function () {
+            var self = this;
+            var table = $('#listsTable', '#listsForm');
+            var rows = $('tr', table);
+            var lists = [];
+            $.each(rows, function () {
+                var l = {
+                    id: $('#id', this).val(),
+                    status: $('#status', this).val(),
+                    listname: $('#listname', this).val(),
+                    liststatus: $('#liststatus', this).val()
+                };
+                lists.push(l);
+            });
+
+            var exclude = $('#excluded_hide', '#listsForm').val();
+
+            var update = {
+                lists: lists,
+                excluded_hide: exclude
+            };
+
+            $(self).ajax({
+                url: '/api/lists',
+                cache: false,
+                type: 'PUT',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(update),
+                success: function (data) {
+                    $.jGrowl(data);
+                }
+            });
+
+            return false;
+        });
+
+        // list add
+        $('#page_content #createlist_action').fastClick(function () {
+            var clonedrow = $('tr#newrow', '#sparesTable').clone();
+            $('tbody', '#listsTable').prepend(clonedrow);
+            var insertedrow = $('tr:first', '#listsTable');
+            initListDelete(insertedrow);
+            $('#listname', insertedrow).focus();
+            $('#listname', insertedrow).alphanumeric();
+        });
+
+        initListDelete('.list_delete');
+    });
+</script>

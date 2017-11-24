@@ -1,0 +1,22 @@
+﻿@model ikutku.ViewModels.action.UserActionViewModel
+
+<div class="profileActions actionBackground">
+    <div>
+        <h3 class="mt10 normal font_gothic">list membership <img src="/Content/img/help_dark.png" title="click on list name to toggle membership" /></h3>
+        <div>
+        @foreach (var row in Model.lists)
+        {
+            <div alt="@(row.listid)" class="result_shadow list_entry @(row.member?"selected":"")">@row.name</div>
+        }
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="ar">
+        <button id="unfollow_action" class="red">unfollow</button>
+        <button id="follow_action" class="">follow</button>
+        <button id="close_action" class="black mt10">close</button>
+    </div>
+    
+    @Html.Hidden("twitterid", Model.id)
+    @Html.Hidden("twitterusername", Model.screenName)
+</div>

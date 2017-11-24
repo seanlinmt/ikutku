@@ -1,0 +1,366 @@
+﻿@using ikutku.Models.user.followers
+@{
+    Layout = "~/Views/Shared/Site.cshtml";
+}
+
+@section MainContent{
+    <div class="profile">
+        <div>
+            <img class="pi_main" src="@(ViewBag.photoUrl)" alt="" />
+            <div class="profile_content">
+                <h3 class="font_black font_gothic"><a target="_blank" href="http://twitter.com/@(ViewBag.twitterUsername)">@ViewBag.twitterUsername</a>
+                </h3>
+                <div>
+                    <span class="font_small normal">
+                        <strong id="follower_count">@ViewBag.followerCount</strong> followers
+                        <strong id="following_count">@ViewBag.followingCount</strong> following 
+                    </span>
+                </div>
+                <div>
+                    <button id="buttonLogout" type="button" class="smaller black">logout</button>
+                    <button id="buttonReset" type="button" class="smaller red @(ViewBag.OutOfSync ? "" : "hidden")">resync account</button>
+                    <span id="apistat" class="font_12px"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mt10">
+            <a id="people_link" href="#" class="navlink navselected">People</a>
+            <a id="lists_link" href="#" class="navlink">Lists</a>
+        </div>
+    </div>
+    <div id="page_content"class="">
+        @Html.Partial("~/Views/people/Index.cshtml")
+    </div>
+    <table id="sparesTable" class="hidden">
+        <tbody>
+            <tr id="newrow">
+                <td>@Html.TextBox("listname")
+                </td>
+                <td>
+                    <select id="liststatus" name="liststatus">
+                        <option value="False">Include</option>
+                        <option selected="selected" value="True">Exclude</option>
+                    </select></td>
+                <td>
+                    <img class="list_delete" src="/Content/img/button_del.png" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        var pageMeNoFollow = 0;
+        var pageNoFollowMe = 0;
+        var pageAllFollowings = 0;
+        var pageAllFollowers = 0;
+        var listType = '@(FollowersListingType.NOFOLLOWME)';
+        
+        function resetPageCounter() {
+            pageMeNoFollow = 0;
+            pageNoFollowMe = 0;
+            pageAllFollowers = 0;
+            pageAllFollowings = 0;
+        }
+
+        function getPageCounter() {
+            var counter;
+            switch (listType) {
+                case "@(FollowersListingType.NOFOLLOWME)":
+                    counter = pageNoFollowMe;
+                    break;
+                case "@(FollowersListingType.ALLFOLLOWINGS)":
+                    counter = pageAllFollowings;
+                    break;
+                case "@(FollowersListingType.MENOFOLLOW)":
+                    counter = pageMeNoFollow;
+                    break;
+                case "@(FollowersListingType.ALLFOLLOWERS)":
+                    counter = pageAllFollowers;
+                    break;
+                default:
+                    throw "Unknown result type " + listType;
+            }
+
+            return counter;
+        }
+
+        function incrementPageCounter() {
+            switch (listType) {
+                case "@(FollowersListingType.NOFOLLOWME)":
+                    pageNoFollowMe++;
+                    break;
+                case "@(FollowersListingType.ALLFOLLOWINGS)":
+                    pageAllFollowings++;
+                    break;
+                case "@(FollowersListingType.MENOFOLLOW)":
+                    pageMeNoFollow++;
+                    break;
+                case "@(FollowersListingType.ALLFOLLOWERS)":
+                    pageAllFollowers++;
+                    break;
+                default:
+                    throw "Unknown result type " + listType;
+            }
+        }
+
+        function getFollowers(more, btn) {
+            var url;
+            var ctx = $('#result_container');
+
+            if (more) {
+                url = "/people/ListFollowers?m=1";
+            } else {
+                url = "/people/ListFollowers";
+                $('.result_body', ctx).html('');
+            }
+
+            var params = {
+                method: $('#sort_method').val(),
+                dir: $('#sort_dir').val(),
+                page: getPageCounter(),
+                type: listType,
+                rows: $('#select_rows').val()
+            };
+
+            $(btn).getx(url, params, function (json_result) {
+                if (json_result.success) {
+                    if (more) {
+                        $(btn).parent().remove();
+                        $('#result_content', ctx).append(json_result.data);
+                    } else {
+                        $('.result_body', ctx).append(json_result.data);
+                        $("#result_content", ctx).resizable();
+                    }
+                    initResultEvents();
+                    incrementPageCounter();
+                } else {
+                    $('.result_body', ctx).append(json_result.message);
+                }
+            }, 'json');
+            return false;
+        }
+        
+        function initResultEvents() {
+            // dialog open
+            $('.user_entry', '.result_body').fastClick(function (e) {
+                if (!$(e.target).is('img')) {
+                    if (!$(e.target).is('a') &&
+                        !$(this).isProtected()) {
+                        $(this).toggleClass('selected');
+                    }
+                    return true;
+                }
+
+                // check that dialog not already open
+                var dialog = $(this).next('.profileActions');
+                if (dialog.length == 1) {
+                    $('#close_action', dialog).trigger('click');
+                    return false;
+                }
+
+                //slidedown
+                $(this).toggleClass('result_shadow mt20 actionBackground bb0');
+
+                var twitterid = $(this).attr("alt2");
+
+                var self = this;
+
+                $(self).post('/people/ProfileActions/', { id: twitterid }, function (result) {
+                    $(result).insertAfter(self);
+
+                    initDialogBoxEvents();
+
+                    // disable (un)follow buttons
+                    var actiondialog = $(self).next();
+
+                    switch (listType) {
+                        case "@(FollowersListingType.NOFOLLOWME)":
+                        case "@(FollowersListingType.ALLFOLLOWINGS)":
+                            $('#follow_action', actiondialog).hide();
+                            break;
+                        case "@(FollowersListingType.MENOFOLLOW)":
+                        case "@(FollowersListingType.ALLFOLLOWERS)":
+                            $('#unfollow_action', actiondialog).hide();
+                            break;
+                        default:
+                            throw "Unknown result type " + listType;
+                    }
+                });
+
+                return false;
+            });
+
+            $('.moreButton').fastClick(function () {
+                $('.selectall').attr('checked', false);
+                getFollowers(true, this);
+            });
+
+            $('.selectall').fastClick(function () {
+                var checked = $(this).is(':checked');
+                var ctx = $(this).closest('.result_body');
+
+                $('.user_entry', ctx).each(function () {
+                    if (!$(this).isProtected()) {
+                        if (checked) {
+                            $(this).addClass('selected');
+                        } else {
+                            $(this).removeClass('selected');
+                        }
+                    }
+                });
+            });
+        }
+
+        function initDialogBoxEvents() {
+            // dialog close
+            $('.profileActions #close_action').fastClick(function () {
+                $(this).closest('.profileActions').slideUp(function () {
+                    $(this).remove();
+                });
+
+                var context = $(this).closest('.profileActions');
+                $(context).prev('.user_entry').toggleClass('result_shadow mt20 actionBackground bb0');
+            });
+
+            // unfollow user
+            $('.profileActions #unfollow_action').fastClick(function () {
+                var confirm = window.confirm("Are you sure you want to unfollow this user?");
+                if (!confirm) {
+                    return false;
+                }
+
+                var button = this;
+                var context = $(this).closest('.profileActions');
+                var twitterid = $('#twitterid', context).val();
+
+                ikutku.FollowerUnfollow(button, [twitterid],
+                    $(context).closest('.result_body'),
+                    function () {
+                        $.jGrowl('Unfollow successful');
+
+                        // remove user result
+                        handleProfileActionDialog(twitterid, context);
+                    });
+
+                return false;
+            });
+
+            // follow user
+            $('.profileActions #follow_action').fastClick(function () {
+                var confirm = window.confirm("Are you sure you want to follow this user?");
+                if (!confirm) {
+                    return false;
+                }
+                var button = this;
+                var context = $(this).closest('.profileActions');
+                var twitterid = $('#twitterid', context).val();
+
+                ikutku.FollowerFollow(button, [twitterid],
+                    $(context).closest('.result_body'),
+                    function () {
+                        $.jGrowl('Follow successful');
+
+                        // remove user result
+                        handleProfileActionDialog(twitterid, context);
+                    });
+
+                return false;
+            });
+
+            // toggle user in list
+            $('.list_entry').fastClick(function () {
+                var ctx = $(this).closest('.profileActions');
+                var list = this;
+                var listid = $(this).attr('alt');
+                var twitterid = $('#twitterid', ctx).val();
+                var selected = $(this).hasClass('selected');
+
+                if (selected) {
+                    // then remove user from list
+                    $(list).ajax({
+                        url: ['/api/lists/', listid, '/followers/', twitterid].join(""),
+                        cache: false,
+                        type: 'DELETE',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $(list).removeClass('selected');
+
+                                if ($('.selected', ctx).length == 0) {
+                                    $(ctx).prev().removeClass('user_overlay');
+                                }
+                            } else {
+                                $.jGrowl('Unable to remove user from list');
+                            }
+                        }
+                    });
+
+                } else {
+                    // then add user to list
+                    $(list).ajax({
+                        url: ['/api/lists/', listid, '/followers/', twitterid].join(""),
+                        cache: false,
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $(list).addClass('selected');
+                                $(ctx).prev().addClass('user_overlay');
+                            } else {
+                                $.jGrowl('Unable to add user to list');
+                            }
+                        }
+                    });
+
+                }
+                return false;
+            });
+        }
+
+        function handleProfileActionDialog(twitterid, context) {
+            // slide up action dialog
+            $('#close_action', context).trigger('click');
+
+            var container = $(context).closest('.result_body');
+
+            var entry = $(".user_entry[alt2='" + twitterid + "']", container);
+
+            // remove any opened profile
+            $(entry).next().remove();
+
+            // remove entry
+            $(entry).remove();
+        }
+
+        $(document).ready(function () {
+            $('.navlink').fastClick(function () {
+                $('#page_content').showLoadingBlock(true);
+                $('.navlink').removeClass('navselected');
+                $(this).addClass('navselected');
+
+                var id = $(this).attr('id');
+                var url = '';
+                switch (id) {
+                    case 'people_link':
+                        url = '/people';
+                        break;
+                    case 'lists_link':
+                        url = '/lists';
+                        break;
+                    default:
+                        break;
+                }
+
+                $.post(url, function (result) {
+                    $('#page_content').hide().html(result).fadeIn('fast');
+                }, 'html');
+
+                return false;
+            }); // navlink
+
+            
+        });
+
+    </script>
+
+
+}

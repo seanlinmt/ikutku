@@ -1,0 +1,120 @@
+﻿@using ikutku.Models.user.followers
+<div id="people_content" class="">
+    <div id="selector_container">
+        Get 
+    <select id="select_list" autocomplete="off">
+        <option value="@(FollowersListingType.NOFOLLOWME)">People Who Aren't Following Me</option>
+        <option value="@(FollowersListingType.MENOFOLLOW)">People Who I'm Not Following</option>
+        <option value="@(FollowersListingType.ALLFOLLOWINGS)">Everyone I'm Following</option>
+    </select>
+    and return
+    <select id="select_rows">
+        <option value="1000">1000</option>
+        <option value="100" selected="selected">100</option>
+        <option value="50">50</option>
+        <option value="10">10</option>
+    </select>
+        <span>users per page by
+            <select id="sort_dir">
+                <option value="asc">ascending</option>
+                <option value="desc" selected="selected">descending</option>
+            </select>
+            <select id="sort_method">
+                <option value="@(OrderByType.ACTIVITY_DATE)">activity</option>
+                <option value="@(OrderByType.FOLLOW_DATE)" selected="selected">follow date</option>
+                <option value="@(OrderByType.FOLLOWER_RATIO)">follow ratio</option>
+                <option value="@(OrderByType.FOLLOWER_COUNT)">number of followers</option>
+                <option value="@(OrderByType.FOLLOWING_COUNT)">number following</option>
+            </select>
+        </span>
+</div>
+    <div class="button_container">
+        <button autocomplete="off" id="buttonNoFollowMe" type="button" class="">list users</button>
+        <p class="error_container">
+            <span class="error"></span>
+        </p>
+    </div>
+</div>
+<div id="result_container" class="">
+    <div class="result_body">
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // unfollow button
+        $('#buttonUnfollow').fastClick(function () {
+            var twitterids = [];
+            var self = this;
+            var ctx = $('#result_container');
+            var selected = $('.result_body', ctx).find('.selected');
+
+            $.each(selected, function (i, val) {
+                twitterids.push($(this).attr('alt2'));
+            });
+
+            if (twitterids.length == 0) {
+                $.jGrowl('Nobody selected');
+                return;
+            }
+
+            ikutku.FollowerUnfollow(self, twitterids, ctx,
+                function () {
+                    $.jGrowl('Unfollow successful');
+                });
+        });
+
+        // follow button
+        $('#buttonFollow').fastClick(function () {
+            var twitterids = [];
+            var self = this;
+            var ctx = $('#result_container');
+            var selected = $('.result_body', ctx).find('.selected');
+            $.each(selected, function (i, val) {
+                twitterids.push($(this).attr('alt2'));
+            });
+
+            if (twitterids.length == 0) {
+                $.jGrowl('Nobody selected');
+                return;
+            }
+
+            ikutku.FollowerFollow(self, twitterids, ctx,
+                function () {
+                    $.jGrowl('Follow successful');
+                });
+        });
+
+        $('#buttonReset').fastClick(function () {
+            var ok = window.confirm("Are you sure? This may take awhile.");
+            if (!ok) {
+                return false;
+            }
+
+            $(this).ajax({
+                url: '/api/account?',
+                cache: false,
+                type: 'PUT',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $.jGrowl(data);
+                    window.location.reload();
+                }
+            });
+
+            return false;
+        });
+
+        $('#buttonLogout').fastClick(function () {
+            var ok = window.confirm("Are you sure? We will not be able to sync your account until you login again.");
+            if (!ok) {
+                return;
+            }
+            window.location = "/login/signout";
+        });
+
+        $('#buttonNoFollowMe,#buttonMeNoFollow').fastClick(function () {
+            resetPageCounter();
+            getFollowers(false, this);
+        });
+    });
+</script>
